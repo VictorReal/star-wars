@@ -1,0 +1,27 @@
+.container{
+    background-color: black;
+    color: whitesmoke;
+    border: 3px solid #ffe81f;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 7px 20px;
+    max-width: 300px;
+}
+body{
+    background-image: url("../pictures/starwars_gettyimages-510216640.jpg");
+    background-attachment: fixed;
+}
+#app{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 4rem;
+    justify-content:center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#headline{
+    display: flex;
+    justify-content: center;
+}
+img{
+    width:20%
+}
