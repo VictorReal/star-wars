@@ -25,3 +25,17 @@ body{
 img{
     width:20%
 }
+@media (max-width: 1200px) {
+    #app{
+        grid-template-columns: auto auto;
+    }
+}
+@media (max-width: 800px) {
+    #app{
+        grid-template-columns: auto;
+        gap: 1rem;
+    }
+    img{
+        width:40%
+    }
+}

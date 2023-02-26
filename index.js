@@ -27,7 +27,7 @@ function renderCharacters(app, characters){
             <p id="homeworld"> Homeworld: </p>
             <p> Films: ${character.films[0]}</p>
             <p> Species: ${character.species}</p>
-            <p> Vehicles: ${character.vehicles}</p>
+            <p> Vehicles:  </p>
             <p> Starships: ${character.starships[0]}</p>
         `
         app.appendChild(characterContainer) // 9.8
@@ -36,7 +36,6 @@ function renderCharacters(app, characters){
 }
 
 const app = document.getElementById('app') // 5
-
 
 /*
 
