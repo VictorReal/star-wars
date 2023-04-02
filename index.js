@@ -26,10 +26,6 @@ function renderCharacters(characters) {
         speciesElem.textContent = `Species: ${species.name}`;
       });
 
-
-
-
-    // Fetch the movie data for the character
     character.films.forEach(filmUrl => {
       fetch(filmUrl)
         .then(response => response.json())
@@ -40,6 +36,7 @@ function renderCharacters(characters) {
           filmsElem.appendChild(filmElem);
         })
     });
+
     Promise.all(character.vehicles.map(vehicleUrl =>
       fetch(vehicleUrl)
         .then(response => response.json())
@@ -51,8 +48,6 @@ function renderCharacters(characters) {
         vehiclesElem.appendChild(vehicleElem);
       });
     });
-
-   
 
     Promise.all(character.starships.map(starshipUrl =>
       fetch(starshipUrl)
@@ -74,7 +69,6 @@ function renderCharacters(characters) {
       <p>Skin color: ${character.skin_color}</p>
       <p>Eye color: ${character.eye_color}</p>
       <p>Birth year: ${character.birth_year}. Gender: ${character.gender}</p>
- 
       <p class="homeworld"></p>
       <p>Films:</p>
       <ul class="films"></ul>
@@ -83,10 +77,8 @@ function renderCharacters(characters) {
       <ul class="starships"></ul>
       <p>Vehicles:</p>
       <ul class="vehicles"></ul>
-      
     `;
-
-    // Add the character container to the app
+    
     const app = document.getElementById('app');
     app.appendChild(characterContainer);
   });
