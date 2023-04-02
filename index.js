@@ -1,85 +1,93 @@
-const url='https://swapi.dev/api/people/' // 1
-let characters = [] // 2
+const url = 'https://swapi.dev/api/people/';
 
-fetch(url, { // 3
-  method: 'GET',
-}).then(function(response){
-    return response.json() // 6
-}).then(function(data){
-    characters = data.results // 7
-    renderCharacters(app, characters) // 8
-})
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    const characters = data.results;
+    renderCharacters(characters);
+  })
 
-// 4 function initialization
-function renderCharacters(app, characters){ 
-    const moviesUrl = characters[0].films
-    console.log(moviesUrl)
-    for(const url of moviesUrl){
-      fetch(url).then(res => res.json()).then(data =>{
-        moviesData.push(data)
-        console.log(moviesData) // the last one
-      }) 
-    }
-    for(const character of characters){ // 9
-        const characterContainer = document.createElement('div') // 9.1
-        characterContainer.classList.add('container')
-        characterContainer.innerHTML = `
-            <p class="name"> ${character.name} </p>
-            <p> Height: ${character.height}cm </p>
-            <p> Mass: ${character.mass}kg </p>
-            <p> Hair: ${character.hair_color}</p>
-            <p> Skin: ${character.skin_color}</p>
-            <p> Eye color: ${character.eye_color}</p>
-            <p> Birth year: ${character.birth_year}</p>
-            <p> Gender: ${character.gender}</p>
-            <p id="homeworld"> Homeworld: </p>
-            <p> Films: ${characters[0].films[1]}</p>
-            <p> Species: ${character.species}</p>
-            <p> Vehicles:  </p>
-            <p> Starships: ${character.starships[0]}</p>
-        `
-        app.appendChild(characterContainer) // 9.8
-    }
+function renderCharacters(characters) {
+  characters.forEach(character => {
+    const characterContainer = document.createElement('div');
+    characterContainer.classList.add('container');
+
+    fetch(character.homeworld)
+      .then(response => response.json())
+      .then(homeworld => {
+        const homeworldElem = characterContainer.querySelector('.homeworld');
+        homeworldElem.textContent = `Homeworld: ${homeworld.name}`;
+      });
+     
+    fetch(character.species)
+      .then(response => response.json())
+      .then(species => {
+        const speciesElem = characterContainer.querySelector('.species');
+        speciesElem.textContent = `Species: ${species.name}`;
+      });
+
+
+
+
+    // Fetch the movie data for the character
+    character.films.forEach(filmUrl => {
+      fetch(filmUrl)
+        .then(response => response.json())
+        .then(film => {
+          const filmsElem = characterContainer.querySelector('.films');
+          const filmElem = document.createElement('li');
+          filmElem.textContent = film.title;
+          filmsElem.appendChild(filmElem);
+        })
+    });
+    Promise.all(character.vehicles.map(vehicleUrl =>
+      fetch(vehicleUrl)
+        .then(response => response.json())
+    )).then(vehicles => {
+      const vehiclesElem = characterContainer.querySelector('.vehicles');
+      vehicles.forEach(vehicle => {
+        const vehicleElem = document.createElement('li');
+        vehicleElem.textContent = vehicle.name;
+        vehiclesElem.appendChild(vehicleElem);
+      });
+    });
+
+   
+
+    Promise.all(character.starships.map(starshipUrl =>
+      fetch(starshipUrl)
+        .then(response => response.json())
+    )).then(starships => {
+      const starshipsElem = characterContainer.querySelector('.starships');
+      starships.forEach(starship => {
+        const starshipElem = document.createElement('li');
+        starshipElem.textContent = starship.name;
+        starshipsElem.appendChild(starshipElem);
+      });
+    });
+
+    // Set the character data in the container
+    characterContainer.innerHTML = `
+      <h1 class="name">${character.name}</h1>
+      <p>Height: ${character.height} cm. Mass: ${character.mass} kg</p>
+      <p>Hair color: ${character.hair_color}.
+      <p>Skin color: ${character.skin_color}</p>
+      <p>Eye color: ${character.eye_color}</p>
+      <p>Birth year: ${character.birth_year}. Gender: ${character.gender}</p>
+ 
+      <p class="homeworld"></p>
+      <p>Films:</p>
+      <ul class="films"></ul>
+      <p class="species"></p>
+      <p>Starships:</p>
+      <ul class="starships"></ul>
+      <p>Vehicles:</p>
+      <ul class="vehicles"></ul>
+      
+    `;
+
+    // Add the character container to the app
+    const app = document.getElementById('app');
+    app.appendChild(characterContainer);
+  });
 }
-
-const app = document.getElementById('app') // 5
-
-/*
-const url='https://swapi.dev/api/people/' // 1
-let characters = [] // 2
-
-fetch(url, { // 3
-  method: 'GET',
-}).then(function(response){
-    return response.json() // 6
-}).then(function(data){
-    characters = data.results // 7
-    renderCharacters(app, characters) // 8
-})
-
-// 4 function initialization
-function renderCharacters(app, characters){ 
-    for(const character of characters){ // 9
-        const characterContainer = document.createElement('div') // 9.1
-        characterContainer.classList.add('container')
-        characterContainer.innerHTML = `
-            <p class="name"> ${character.name} </p>
-            <p> Height: ${character.height}cm </p>
-            <p> Mass: ${character.mass}kg </p>
-            <p> Hair: ${character.hair_color}</p>
-            <p> Skin: ${character.skin_color}</p>
-            <p> Eye color: ${character.eye_color}</p>
-            <p> Birth year: ${character.birth_year}</p>
-            <p> Gender: ${character.gender}</p>
-            <p id="homeworld"> Homeworld: </p>
-            <p> Films: ${character.films[0]}</p>
-            <p> Species: ${character.species}</p>
-            <p> Vehicles:  </p>
-            <p> Starships: ${character.starships[0]}</p>
-        `
-        app.appendChild(characterContainer) // 9.8
-    }   
-}
-
-const app = document.getElementById('app') // 5
- */
