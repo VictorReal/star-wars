@@ -73,9 +73,9 @@ function renderCharacters(characters) {
       <p>Films:</p>
       <ul class="films"></ul>
       <p class="species"></p>
-      <p>Starships:</p>
+      <p>${character.starships[0] ? "Starships:" : ' '}</p>
       <ul class="starships"></ul>
-      <p>Vehicles:</p>
+      <p>${character.vehicles[0] ? "Vehicles:" : ' '}</p>
       <ul class="vehicles"></ul>
     `;
     
